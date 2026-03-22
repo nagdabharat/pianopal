@@ -1,74 +1,64 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const SONGS = [
-  // Kids Classics
-  {id:1,title:"Twinkle Twinkle",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"You just played the C major scale — the most important scale in piano!"},
-  {id:2,title:"Happy Birthday",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:375},{note:"C4",dur:125},{note:"D4",dur:500},{note:"C4",dur:500},{note:"F4",dur:500},{note:"E4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"D4",dur:500},{note:"C4",dur:500},{note:"G4",dur:500},{note:"F4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"C5",dur:500},{note:"A4",dur:500},{note:"F4",dur:500},{note:"E4",dur:500},{note:"D4",dur:1000},{note:"A#4",dur:375},{note:"A#4",dur:125},{note:"A4",dur:500},{note:"F4",dur:500},{note:"G4",dur:500},{note:"F4",dur:1000}],fact:"This song uses skips — jumping over notes — a key piano technique!"},
-  {id:3,title:"Mary Had a Little Lamb",category:"Kids Classic",difficulty:1,notes:[{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"This melody moves mostly by steps — each note is right next to the previous one!"},
-  {id:4,title:"Baby Shark",category:"Kids Classic",difficulty:1,notes:[{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"C5",dur:600},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"B4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600}],fact:"Baby Shark uses just 3 notes — A, B, and C. Simple patterns make catchy songs!"},
-  {id:5,title:"Hot Cross Buns",category:"Kids Classic",difficulty:1,notes:[{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Hot Cross Buns only uses 3 notes — E, D, C. One of the simplest songs ever written!"},
-  {id:6,title:"Baa Baa Black Sheep",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Same melody as Twinkle Twinkle and the Alphabet Song — one melody, three songs!"},
-  {id:7,title:"Old MacDonald",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Old MacDonald uses a simple pattern that repeats — repetition is a key tool in songwriting!"},
-  {id:8,title:"Row Row Row Your Boat",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:600},{note:"C4",dur:600},{note:"C4",dur:400},{note:"D4",dur:200},{note:"E4",dur:600},{note:"E4",dur:400},{note:"D4",dur:200},{note:"E4",dur:400},{note:"F4",dur:200},{note:"G4",dur:800},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"E4",dur:300},{note:"E4",dur:300},{note:"E4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"G4",dur:400},{note:"F4",dur:200},{note:"E4",dur:400},{note:"D4",dur:200},{note:"C4",dur:800}],fact:"This song builds upward step by step — composers call that an ascending scale run!"},
-  {id:9,title:"Wheels on the Bus",category:"Kids Classic",difficulty:1,notes:[{note:"G4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Uses call-and-response structure — a technique used in lots of pop and jazz music!"},
-  {id:10,title:"Itsy Bitsy Spider",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600},{note:"A4",dur:300},{note:"G4",dur:600},{note:"F4",dur:600},{note:"C4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600}],fact:"Starts with a 4th leap (C to F) right at the start — a musical interval jump!"},
-  {id:11,title:"ABC Song",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"The ABC Song shares its melody with Twinkle Twinkle — they're the exact same tune!"},
-  {id:12,title:"If You're Happy",category:"Kids Classic",difficulty:1,notes:[{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:600},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:600},{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:600},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600}],fact:"In triple feel — you can tap your foot 3 times per measure!"},
-  // Disney
-  {id:13,title:"Let It Go",category:"Disney",difficulty:2,notes:[{note:"A4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"E5",dur:800},{note:"D5",dur:800},{note:"A4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"F5",dur:800},{note:"E5",dur:800},{note:"A4",dur:400},{note:"A4",dur:400},{note:"E5",dur:400},{note:"D5",dur:600},{note:"C5",dur:400},{note:"A4",dur:800},{note:"A4",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"C5",dur:400},{note:"A4",dur:800}],fact:"Let It Go is in Ab major — a key that uses lots of black keys called flats!"},
-  {id:14,title:"A Whole New World",category:"Disney",difficulty:2,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"C5",dur:800},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"C4",dur:800}],fact:"Uses stepwise motion — notes moving up or down by just one step at a time!"},
-  {id:15,title:"Circle of Life",category:"Disney",difficulty:3,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"C5",dur:600},{note:"B4",dur:200},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"D5",dur:600},{note:"C5",dur:200},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Opens with a C major chord — C, E, and G together. That's your first chord!"},
-  {id:16,title:"Under the Sea",category:"Disney",difficulty:2,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"A calypso-style song — a Caribbean rhythm that makes you want to dance!"},
-  {id:17,title:"Part of Your World",category:"Disney",difficulty:2,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"C5",dur:400},{note:"D5",dur:400},{note:"C5",dur:400},{note:"B4",dur:800}],fact:"Climbs upward phrase by phrase — composers call that a rising sequence!"},
-  {id:18,title:"Be Our Guest",category:"Disney",difficulty:2,notes:[{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:800}],fact:"Be Our Guest is a waltz — a dance in 3/4 time. Count 1-2-3, 1-2-3!"},
-  {id:19,title:"Hakuna Matata",category:"Disney",difficulty:2,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800}],fact:"Has a bouncy syncopated rhythm — notes that land in unexpected places!"},
-  {id:20,title:"How Far I'll Go",category:"Disney",difficulty:2,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:600},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Uses a rising 3rd leap (E to G) which creates a feeling of longing and wonder!"},
-  {id:21,title:"Remember Me",category:"Disney",difficulty:2,notes:[{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"G4",dur:800}],fact:"From Coco — based on son jarocho, a beautiful Mexican folk tradition!"},
-  {id:22,title:"When You Wish Upon a Star",category:"Disney",difficulty:2,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Starts with a rising 6th — a big leap that sounds magical and hopeful!"},
-  {id:23,title:"Colors of the Wind",category:"Disney",difficulty:2,notes:[{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Uses pentatonic notes — a 5-note scale found in music across every culture!"},
-  {id:24,title:"I See the Light",category:"Disney",difficulty:2,notes:[{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:800}],fact:"From Tangled — uses a waltz rhythm in 3/4 time that feels like gently swaying!"},
-  {id:25,title:"Reflection",category:"Disney",difficulty:2,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"From Mulan — uses a pentatonic scale inspired by Chinese musical traditions!"},
-  // Classical
-  {id:26,title:"Ode to Joy",category:"Classical",difficulty:2,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:600},{note:"D4",dur:200},{note:"D4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:600},{note:"C4",dur:200},{note:"C4",dur:800}],fact:"Beethoven wrote this when completely deaf — he could only hear it in his mind!"},
-  {id:27,title:"Fur Elise",category:"Classical",difficulty:3,notes:[{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"B4",dur:300},{note:"D5",dur:300},{note:"C5",dur:300},{note:"A4",dur:600},{note:"C4",dur:300},{note:"E4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"E4",dur:300},{note:"G#4",dur:300},{note:"B4",dur:300},{note:"C5",dur:600},{note:"E4",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"B4",dur:300},{note:"D5",dur:300},{note:"C5",dur:300},{note:"A4",dur:600}],fact:"Uses chromatic movement — half steps that give it a mysterious, haunting sound!"},
-  {id:28,title:"Moonlight Sonata",category:"Classical",difficulty:3,notes:[{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F4",dur:400},{note:"B4",dur:400},{note:"D5",dur:400}],fact:"Uses a repeating broken chord pattern called an arpeggiated triplet!"},
-  {id:29,title:"Canon in D",category:"Classical",difficulty:2,notes:[{note:"F#4",dur:500},{note:"E4",dur:500},{note:"D4",dur:500},{note:"C#4",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"B4",dur:500},{note:"C#5",dur:500},{note:"D5",dur:500},{note:"C#5",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:500},{note:"F#4",dur:500},{note:"G4",dur:500},{note:"A4",dur:500}],fact:"Pachelbel's Canon uses a bass line that repeats all the way through — a ground bass!"},
-  // Folk
-  {id:30,title:"Amazing Grace",category:"Folk",difficulty:1,notes:[{note:"C4",dur:400},{note:"E4",dur:600},{note:"G4",dur:200},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:600},{note:"C4",dur:200},{note:"E4",dur:800},{note:"D4",dur:800},{note:"C4",dur:400},{note:"E4",dur:600},{note:"G4",dur:200},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:800}],fact:"In 3/4 time — a waltz feel. You can feel 3 beats in each measure!"},
-  {id:31,title:"Oh When the Saints",category:"Folk",difficulty:1,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"E4",dur:200},{note:"G4",dur:600},{note:"F4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"G4",dur:600},{note:"F4",dur:200},{note:"E4",dur:800}],fact:"One of the most famous jazz standards — musicians love to improvise over it!"},
-  {id:32,title:"Scarborough Fair",category:"Folk",difficulty:2,notes:[{note:"A4",dur:600},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"A4",dur:400},{note:"C5",dur:800},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"In Dorian mode — an old medieval scale that sounds slightly mysterious!"},
-  {id:33,title:"Danny Boy",category:"Folk",difficulty:2,notes:[{note:"G4",dur:400},{note:"C5",dur:600},{note:"C5",dur:200},{note:"C5",dur:400},{note:"D5",dur:400},{note:"E5",dur:600},{note:"C5",dur:200},{note:"E5",dur:400},{note:"D5",dur:600},{note:"C5",dur:400},{note:"B4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:600},{note:"B4",dur:200},{note:"A4",dur:800}],fact:"Uses large interval leaps — jumping from low to high notes — which adds drama!"},
-  // Nursery
-  {id:34,title:"London Bridge",category:"Nursery",difficulty:1,notes:[{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"D4",dur:300},{note:"E4",dur:300},{note:"F4",dur:600},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600}],fact:"Uses quarter notes and half notes — the two most basic note values in music!"},
-  {id:35,title:"Jingle Bells",category:"Nursery",difficulty:1,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"G4",dur:800}],fact:"Starts with the same note 3 times — that repeated note is called an ostinato!"},
-  // Pop
-  {id:36,title:"Believer",category:"Pop",difficulty:2,notes:[{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"A4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600}],fact:"Uses a minor key — minor keys often sound dramatic and powerful!"},
-  {id:37,title:"Happy (Pharrell)",category:"Pop",difficulty:2,notes:[{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600}],fact:"Uses a Mixolydian mode — a scale that sounds bright and funky, used in soul music!"},
-  {id:38,title:"Shake It Off",category:"Pop",difficulty:2,notes:[{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"E4",dur:300},{note:"G4",dur:600},{note:"E4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600}],fact:"In G major — a very guitar-friendly key with lots of open strings!"},
-  {id:39,title:"Roar",category:"Pop",difficulty:2,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"In C major — the simplest key with no sharps or flats!"},
-  {id:40,title:"Counting Stars",category:"Pop",difficulty:2,notes:[{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800}],fact:"Alternates between minor and major — creating tension and release!"},
-  {id:41,title:"Someone Like You",category:"Pop",difficulty:2,notes:[{note:"A4",dur:500},{note:"E4",dur:500},{note:"F4",dur:500},{note:"D4",dur:500},{note:"E4",dur:500},{note:"A4",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:500},{note:"F4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800}],fact:"Uses a broken chord pattern in the left hand — called an Alberti bass!"},
-  {id:42,title:"Shape of You",category:"Pop",difficulty:2,notes:[{note:"C#5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G#4",dur:400},{note:"F#4",dur:600},{note:"C#5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G#4",dur:400},{note:"E4",dur:800},{note:"F#4",dur:400},{note:"G#4",dur:400},{note:"A4",dur:400},{note:"B4",dur:800}],fact:"Uses a minor pentatonic scale — the same scale used in lots of blues music!"},
-  {id:43,title:"Shallow",category:"Pop",difficulty:2,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:800}],fact:"The big chorus changes key — that key change adds emotional impact!"},
-  {id:44,title:"Blinding Lights",category:"Pop",difficulty:2,notes:[{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"E4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:600}],fact:"Inspired by 1980s synth music — uses minor key with a driving beat!"},
-  {id:45,title:"Levitating",category:"Pop",difficulty:2,notes:[{note:"F4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"A4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"A4",dur:800}],fact:"In F major with a disco-influenced groove — feel the 4 beats per measure!"},
-  {id:46,title:"Stay With Me",category:"Pop",difficulty:2,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800}],fact:"Uses a gospel-inspired chord progression — church music influence!"},
-  // Video Game
-  {id:47,title:"Minecraft Theme",category:"Video Game",difficulty:2,notes:[{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"A4",dur:400},{note:"B4",dur:800},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:1000},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:800}],fact:"Minimalist music — simple notes with lots of space create a dreamy feeling!"},
-  {id:48,title:"Super Mario Theme",category:"Video Game",difficulty:2,notes:[{note:"E5",dur:200},{note:"E5",dur:200},{note:"E5",dur:400},{note:"C5",dur:200},{note:"E5",dur:400},{note:"G5",dur:600},{note:"G4",dur:600},{note:"C5",dur:400},{note:"G4",dur:400},{note:"E4",dur:600},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A#4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E5",dur:400},{note:"G5",dur:400},{note:"A5",dur:400},{note:"F5",dur:400},{note:"G5",dur:400},{note:"E5",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"B4",dur:400}],fact:"In C major and uses staccato notes — short, detached notes that sound bouncy!"},
-  {id:49,title:"Zelda Lullaby",category:"Video Game",difficulty:2,notes:[{note:"B4",dur:300},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:300},{note:"A5",dur:300},{note:"B4",dur:600},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:600},{note:"F#5",dur:800},{note:"B4",dur:300},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:600},{note:"E5",dur:800}],fact:"In G major with a 3/4 waltz rhythm that feels magical and mysterious!"},
-  {id:50,title:"Pokemon Theme",category:"Video Game",difficulty:2,notes:[{note:"A4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"E4",dur:300},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"B4",dur:800},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"E5",dur:800}],fact:"In A major — a key popular for its bright, heroic, adventurous sound!"},
-  {id:51,title:"Tetris Theme",category:"Video Game",difficulty:2,notes:[{note:"E5",dur:400},{note:"B4",dur:200},{note:"C5",dur:200},{note:"D5",dur:400},{note:"C5",dur:200},{note:"B4",dur:200},{note:"A4",dur:400},{note:"A4",dur:200},{note:"C5",dur:200},{note:"E5",dur:400},{note:"D5",dur:200},{note:"C5",dur:200},{note:"B4",dur:600},{note:"C5",dur:200},{note:"D5",dur:400},{note:"E5",dur:400},{note:"C5",dur:400},{note:"A4",dur:400},{note:"A4",dur:800}],fact:"A Russian folk song called Korobeiniki — one of the most played songs in history!"},
-  // Hindi
-  {id:52,title:"Tum Hi Ho",category:"Hindi",difficulty:2,notes:[{note:"E4",dur:600},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800}],fact:"Tum Hi Ho from Aashiqui 2 (2013) is in a minor key — that's why it sounds so emotional!"},
-  {id:53,title:"Kal Ho Na Ho",category:"Hindi",difficulty:2,notes:[{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800}],fact:"Kal Ho Na Ho (2003) — the melody rises and falls like a wave, called a melodic arc!"},
-  {id:54,title:"Chak De India",category:"Hindi",difficulty:1,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"Chak De India (2007) uses a major key with a march-like rhythm — perfect for a sports anthem!"},
-  {id:55,title:"Jai Ho",category:"Hindi",difficulty:1,notes:[{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"F4",dur:800}],fact:"Jai Ho from Slumdog Millionaire (2008) blends Indian folk scales with western pop style!"},
-  {id:56,title:"Rang De Basanti",category:"Hindi",difficulty:2,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Rang De Basanti (2006) uses a Bhairavi-inspired scale — a classical Indian raga!"},
-  {id:57,title:"Dil Se Re",category:"Hindi",difficulty:2,notes:[{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800}],fact:"Dil Se (1998) uses Khamaj raga — one of the most popular ragas in Bollywood music!"},
-  {id:58,title:"Barso Re",category:"Hindi",difficulty:2,notes:[{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"C5",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:600}],fact:"Barso Re from Guru (2007) — A.R. Rahman used Raag Megh Malhar, the rain raga of India!"},
-  {id:59,title:"Lakshya",category:"Hindi",difficulty:1,notes:[{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"The Lakshya title track (2004) uses a rising pentatonic scale — sounds uplifting and heroic!"},
-  {id:60,title:"Vande Mataram",category:"Hindi",difficulty:1,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"F4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Vande Mataram by A.R. Rahman (1997) blends Carnatic classical music with modern pop!"},
+  {id:1,title:"Twinkle Twinkle",category:"Kids Classic",difficulty:1,bpm:100,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"You just played the C major scale — the most important scale in piano!"},
+  {id:2,title:"Happy Birthday",category:"Kids Classic",difficulty:1,bpm:90,notes:[{note:"C4",dur:375},{note:"C4",dur:125},{note:"D4",dur:500},{note:"C4",dur:500},{note:"F4",dur:500},{note:"E4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"D4",dur:500},{note:"C4",dur:500},{note:"G4",dur:500},{note:"F4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"C5",dur:500},{note:"A4",dur:500},{note:"F4",dur:500},{note:"E4",dur:500},{note:"D4",dur:1000},{note:"A#4",dur:375},{note:"A#4",dur:125},{note:"A4",dur:500},{note:"F4",dur:500},{note:"G4",dur:500},{note:"F4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"D4",dur:500},{note:"C4",dur:500},{note:"F4",dur:500},{note:"E4",dur:1000},{note:"C4",dur:375},{note:"C4",dur:125},{note:"G4",dur:500},{note:"F4",dur:1000}],fact:"This song uses skips — jumping over notes — a key piano technique!"},
+  {id:3,title:"Mary Had a Little Lamb",category:"Kids Classic",difficulty:1,bpm:100,notes:[{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"G4",dur:800}],fact:"This melody moves mostly by steps — each note is right next to the previous one!"},
+  {id:4,title:"Baby Shark",category:"Kids Classic",difficulty:1,bpm:110,notes:[{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"C5",dur:600},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"B4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"B4",dur:300},{note:"C5",dur:300},{note:"B4",dur:300},{note:"A4",dur:600}],fact:"Baby Shark uses just 3 notes — A, B, and C. Simple patterns make catchy songs!"},
+  {id:5,title:"Hot Cross Buns",category:"Kids Classic",difficulty:1,bpm:90,notes:[{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"C4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"D4",dur:200},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Hot Cross Buns only uses 3 notes — E, D, C. One of the simplest songs ever written!"},
+  {id:6,title:"Old MacDonald",category:"Kids Classic",difficulty:1,bpm:100,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Old MacDonald uses a simple repeating pattern — repetition is a key tool in songwriting!"},
+  {id:7,title:"Row Row Row Your Boat",category:"Kids Classic",difficulty:1,bpm:92,notes:[{note:"C4",dur:600},{note:"C4",dur:600},{note:"C4",dur:400},{note:"D4",dur:200},{note:"E4",dur:600},{note:"E4",dur:400},{note:"D4",dur:200},{note:"E4",dur:400},{note:"F4",dur:200},{note:"G4",dur:800},{note:"C5",dur:300},{note:"C5",dur:300},{note:"C5",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"E4",dur:300},{note:"E4",dur:300},{note:"E4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"G4",dur:400},{note:"F4",dur:200},{note:"E4",dur:400},{note:"D4",dur:200},{note:"C4",dur:800},{note:"C4",dur:600},{note:"C4",dur:600},{note:"C4",dur:400},{note:"D4",dur:200},{note:"E4",dur:600},{note:"E4",dur:400},{note:"D4",dur:200},{note:"E4",dur:400},{note:"F4",dur:200},{note:"G4",dur:800}],fact:"This song builds upward step by step — composers call that an ascending scale run!"},
+  {id:8,title:"Wheels on the Bus",category:"Kids Classic",difficulty:1,bpm:100,notes:[{note:"G4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Uses call-and-response structure — a technique used in lots of pop and jazz music!"},
+  {id:9,title:"ABC Song",category:"Kids Classic",difficulty:1,bpm:100,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"The ABC Song shares its melody with Twinkle Twinkle — they're the exact same tune!"},
+  {id:10,title:"Itsy Bitsy Spider",category:"Kids Classic",difficulty:1,bpm:88,notes:[{note:"C4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600},{note:"A4",dur:300},{note:"G4",dur:600},{note:"F4",dur:600},{note:"C4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600},{note:"C4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600}],fact:"Starts with a 4th leap (C to F) right at the start — a musical interval jump!"},
+  {id:11,title:"If You're Happy",category:"Kids Classic",difficulty:1,bpm:104,notes:[{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:600},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:600},{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:600},{note:"F4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:600},{note:"C4",dur:300},{note:"C4",dur:300},{note:"F4",dur:600},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"C4",dur:600}],fact:"In triple feel — you can tap your foot 3 times per measure!"},
+  {id:12,title:"Let It Go",category:"Disney",difficulty:2,bpm:68,notes:[{note:"A4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"E5",dur:800},{note:"D5",dur:800},{note:"A4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"F5",dur:800},{note:"E5",dur:800},{note:"A4",dur:400},{note:"A4",dur:400},{note:"E5",dur:400},{note:"D5",dur:600},{note:"C5",dur:400},{note:"A4",dur:800},{note:"A4",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"C5",dur:400},{note:"A4",dur:800},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"E5",dur:800},{note:"D5",dur:800}],fact:"Let It Go is in Ab major — a key that uses lots of black keys called flats!"},
+  {id:13,title:"A Whole New World",category:"Disney",difficulty:2,bpm:84,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"C5",dur:800},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800}],fact:"Uses stepwise motion — notes moving up or down by just one step at a time!"},
+  {id:14,title:"Circle of Life",category:"Disney",difficulty:3,bpm:76,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"C5",dur:600},{note:"B4",dur:200},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"D5",dur:600},{note:"C5",dur:200},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"C5",dur:600},{note:"B4",dur:200},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800}],fact:"Opens with a C major chord — C, E, and G together. That's your first chord!"},
+  {id:15,title:"Under the Sea",category:"Disney",difficulty:2,bpm:108,notes:[{note:"C4",dur:400},{note:"C4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"A calypso-style song — a Caribbean rhythm that makes you want to dance!"},
+  {id:16,title:"Part of Your World",category:"Disney",difficulty:2,bpm:72,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"C5",dur:400},{note:"D5",dur:400},{note:"C5",dur:400},{note:"B4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Climbs upward phrase by phrase — composers call that a rising sequence!"},
+  {id:17,title:"Be Our Guest",category:"Disney",difficulty:2,bpm:108,notes:[{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:800},{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:600}],fact:"Be Our Guest is a waltz — a dance in 3/4 time. Count 1-2-3, 1-2-3!"},
+  {id:18,title:"Hakuna Matata",category:"Disney",difficulty:2,bpm:96,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"Has a bouncy syncopated rhythm — notes that land in unexpected places!"},
+  {id:19,title:"How Far I'll Go",category:"Disney",difficulty:2,bpm:80,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:600},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:800}],fact:"Uses a rising 3rd leap (E to G) which creates a feeling of longing and wonder!"},
+  {id:20,title:"Remember Me",category:"Disney",difficulty:2,bpm:88,notes:[{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"G4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800}],fact:"From Coco — based on son jarocho, a beautiful Mexican folk tradition!"},
+  {id:21,title:"When You Wish Upon a Star",category:"Disney",difficulty:2,bpm:72,notes:[{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"F4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800}],fact:"Starts with a rising 6th — a big leap that sounds magical and hopeful!"},
+  {id:22,title:"Colors of the Wind",category:"Disney",difficulty:2,bpm:76,notes:[{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800}],fact:"Uses pentatonic notes — a 5-note scale found in music across every culture!"},
+  {id:23,title:"I See the Light",category:"Disney",difficulty:2,bpm:80,notes:[{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800}],fact:"From Tangled — uses a waltz rhythm in 3/4 time that feels like gently swaying!"},
+  {id:24,title:"Reflection",category:"Disney",difficulty:2,bpm:76,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:800}],fact:"From Mulan — uses a pentatonic scale inspired by Chinese musical traditions!"},
+  {id:25,title:"Ode to Joy",category:"Classical",difficulty:2,bpm:100,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"E4",dur:600},{note:"D4",dur:200},{note:"D4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:600},{note:"C4",dur:200},{note:"C4",dur:800}],fact:"Beethoven wrote this when completely deaf — he could only hear it in his mind!"},
+  {id:26,title:"Fur Elise",category:"Classical",difficulty:3,bpm:60,notes:[{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"B4",dur:300},{note:"D5",dur:300},{note:"C5",dur:300},{note:"A4",dur:600},{note:"C4",dur:300},{note:"E4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"E4",dur:300},{note:"G#4",dur:300},{note:"B4",dur:300},{note:"C5",dur:600},{note:"E4",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"D#5",dur:300},{note:"E5",dur:300},{note:"B4",dur:300},{note:"D5",dur:300},{note:"C5",dur:300},{note:"A4",dur:600},{note:"C4",dur:300},{note:"E4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"E4",dur:300},{note:"G#4",dur:300},{note:"B4",dur:300},{note:"A4",dur:600}],fact:"Uses chromatic movement — half steps that give it a mysterious, haunting sound!"},
+  {id:27,title:"Moonlight Sonata",category:"Classical",difficulty:3,bpm:54,notes:[{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F4",dur:400},{note:"B4",dur:400},{note:"D5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"G#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F#4",dur:400},{note:"C5",dur:400},{note:"E5",dur:400},{note:"F4",dur:400},{note:"B4",dur:400},{note:"D5",dur:400}],fact:"Uses a repeating broken chord pattern called an arpeggiated triplet!"},
+  {id:28,title:"Canon in D",category:"Classical",difficulty:2,bpm:72,notes:[{note:"F#4",dur:500},{note:"E4",dur:500},{note:"D4",dur:500},{note:"C#4",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"B4",dur:500},{note:"C#5",dur:500},{note:"D5",dur:500},{note:"C#5",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:500},{note:"F#4",dur:500},{note:"G4",dur:500},{note:"A4",dur:500},{note:"D5",dur:500},{note:"C#5",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:500},{note:"F#4",dur:500},{note:"E4",dur:500},{note:"D4",dur:500}],fact:"Pachelbel's Canon uses a bass line that repeats all the way through — a ground bass!"},
+  {id:29,title:"Amazing Grace",category:"Folk",difficulty:1,bpm:72,notes:[{note:"C4",dur:400},{note:"E4",dur:600},{note:"G4",dur:200},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:600},{note:"C4",dur:200},{note:"E4",dur:800},{note:"D4",dur:800},{note:"C4",dur:400},{note:"E4",dur:600},{note:"G4",dur:200},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:800},{note:"E4",dur:400},{note:"C4",dur:600},{note:"E4",dur:200},{note:"D4",dur:600},{note:"C4",dur:800}],fact:"In 3/4 time — a waltz feel. You can feel 3 beats in each measure!"},
+  {id:30,title:"Oh When the Saints",category:"Folk",difficulty:1,bpm:96,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"E4",dur:200},{note:"G4",dur:600},{note:"F4",dur:400},{note:"E4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"G4",dur:600},{note:"F4",dur:200},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"One of the most famous jazz standards — musicians love to improvise over it!"},
+  {id:31,title:"Scarborough Fair",category:"Folk",difficulty:2,bpm:66,notes:[{note:"A4",dur:600},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"A4",dur:400},{note:"C5",dur:800},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"A4",dur:600},{note:"C5",dur:400},{note:"D5",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"A4",dur:800}],fact:"In Dorian mode — an old medieval scale that sounds slightly mysterious!"},
+  {id:32,title:"Danny Boy",category:"Folk",difficulty:2,bpm:66,notes:[{note:"G4",dur:400},{note:"C5",dur:600},{note:"C5",dur:200},{note:"C5",dur:400},{note:"D5",dur:400},{note:"E5",dur:600},{note:"C5",dur:200},{note:"E5",dur:400},{note:"D5",dur:600},{note:"C5",dur:400},{note:"B4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:600},{note:"B4",dur:200},{note:"A4",dur:800},{note:"G4",dur:400},{note:"C5",dur:600},{note:"C5",dur:200},{note:"C5",dur:400},{note:"D5",dur:400},{note:"E5",dur:600},{note:"D5",dur:400},{note:"C5",dur:800}],fact:"Uses large interval leaps — jumping from low to high notes — which adds drama!"},
+  {id:33,title:"London Bridge",category:"Nursery",difficulty:1,bpm:100,notes:[{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"D4",dur:300},{note:"E4",dur:300},{note:"F4",dur:600},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"D4",dur:600},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"D4",dur:600}],fact:"Uses quarter notes and half notes — the two most basic note values in music!"},
+  {id:34,title:"Jingle Bells",category:"Nursery",difficulty:1,bpm:120,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"E4",dur:800}],fact:"Starts with the same note 3 times — that repeated note is called an ostinato!"},
+  {id:35,title:"Believer",category:"Pop",difficulty:2,bpm:90,notes:[{note:"A4",dur:300},{note:"A4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"A4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:600},{note:"D4",dur:300},{note:"E4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600}],fact:"Uses a minor key — minor keys often sound dramatic and powerful!"},
+  {id:36,title:"Happy (Pharrell)",category:"Pop",difficulty:2,bpm:160,notes:[{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"G4",dur:600},{note:"F4",dur:300},{note:"A4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"F4",dur:600},{note:"D4",dur:300},{note:"F4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:300},{note:"F4",dur:300},{note:"E4",dur:300},{note:"D4",dur:600}],fact:"Uses a Mixolydian mode — a scale that sounds bright and funky, used in soul music!"},
+  {id:37,title:"Shake It Off",category:"Pop",difficulty:2,bpm:160,notes:[{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"E4",dur:300},{note:"G4",dur:600},{note:"E4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600},{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"G4",dur:300},{note:"A4",dur:600},{note:"G4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"E4",dur:300},{note:"G4",dur:600}],fact:"In G major — a very guitar-friendly key with lots of open strings!"},
+  {id:38,title:"Roar",category:"Pop",difficulty:2,bpm:88,notes:[{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"In C major — the simplest key with no sharps or flats!"},
+  {id:39,title:"Counting Stars",category:"Pop",difficulty:2,bpm:122,notes:[{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800}],fact:"Alternates between minor and major — creating tension and release!"},
+  {id:40,title:"Someone Like You",category:"Pop",difficulty:2,bpm:68,notes:[{note:"A4",dur:500},{note:"E4",dur:500},{note:"F4",dur:500},{note:"D4",dur:500},{note:"E4",dur:500},{note:"A4",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:500},{note:"F4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"A4",dur:500},{note:"E4",dur:500},{note:"F4",dur:500},{note:"D4",dur:500},{note:"E4",dur:500},{note:"A4",dur:500},{note:"B4",dur:500},{note:"A4",dur:500},{note:"G4",dur:800}],fact:"Uses a broken chord pattern in the left hand — called an Alberti bass!"},
+  {id:41,title:"Shape of You",category:"Pop",difficulty:2,bpm:96,notes:[{note:"C#5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G#4",dur:400},{note:"F#4",dur:600},{note:"C#5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G#4",dur:400},{note:"E4",dur:800},{note:"F#4",dur:400},{note:"G#4",dur:400},{note:"A4",dur:400},{note:"B4",dur:800},{note:"C#5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G#4",dur:400},{note:"F#4",dur:600},{note:"E4",dur:400},{note:"F#4",dur:400},{note:"G#4",dur:800}],fact:"Uses a minor pentatonic scale — the same scale used in lots of blues music!"},
+  {id:42,title:"Shallow",category:"Pop",difficulty:2,bpm:96,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:800}],fact:"The big chorus changes key — that key change adds emotional impact!"},
+  {id:43,title:"Blinding Lights",category:"Pop",difficulty:2,bpm:171,notes:[{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:300},{note:"D4",dur:300},{note:"E4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:600},{note:"E4",dur:300},{note:"E4",dur:300},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600}],fact:"Inspired by 1980s synth music — uses minor key with a driving beat!"},
+  {id:44,title:"Levitating",category:"Pop",difficulty:2,bpm:103,notes:[{note:"F4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"A4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"A4",dur:800},{note:"F4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"A4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:800}],fact:"In F major with a disco-influenced groove — feel the 4 beats per measure!"},
+  {id:45,title:"Stay With Me",category:"Pop",difficulty:2,bpm:84,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"Uses a gospel-inspired chord progression — church music influence!"},
+  {id:46,title:"Tum Hi Ho",category:"Hindi",difficulty:2,bpm:72,notes:[{note:"E4",dur:600},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"E4",dur:600},{note:"D4",dur:400},{note:"E4",dur:400},{note:"G4",dur:600},{note:"E4",dur:400},{note:"D4",dur:800},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800}],fact:"Tum Hi Ho from Aashiqui 2 (2013) is in a minor key — that's why it sounds so emotional!"},
+  {id:47,title:"Kal Ho Na Ho",category:"Hindi",difficulty:2,bpm:80,notes:[{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:600},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:800}],fact:"Kal Ho Na Ho (2003) — the melody rises and falls like a wave, called a melodic arc!"},
+  {id:48,title:"Chak De India",category:"Hindi",difficulty:1,bpm:126,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:400},{note:"D4",dur:400},{note:"E4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"Chak De India (2007) uses a major key with a march-like rhythm — perfect for a sports anthem!"},
+  {id:49,title:"Jai Ho",category:"Hindi",difficulty:1,bpm:104,notes:[{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"F4",dur:800},{note:"D4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800}],fact:"Jai Ho from Slumdog Millionaire (2008) blends Indian folk scales with western pop style!"},
+  {id:50,title:"Rang De Basanti",category:"Hindi",difficulty:2,bpm:88,notes:[{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:400},{note:"A4",dur:400},{note:"B4",dur:600},{note:"A4",dur:400},{note:"G4",dur:800},{note:"E4",dur:400},{note:"G4",dur:400},{note:"A4",dur:600},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800}],fact:"Rang De Basanti (2006) uses a Bhairavi-inspired scale — a classical Indian raga!"},
+  {id:51,title:"Dil Se Re",category:"Hindi",difficulty:2,bpm:104,notes:[{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:800},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"E4",dur:600},{note:"G4",dur:400},{note:"A4",dur:800}],fact:"Dil Se (1998) uses Khamaj raga — one of the most popular ragas in Bollywood music!"},
+  {id:52,title:"Barso Re",category:"Hindi",difficulty:2,bpm:100,notes:[{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"C5",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"A4",dur:300},{note:"G4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"B4",dur:300},{note:"C5",dur:300},{note:"B4",dur:600},{note:"A4",dur:300},{note:"G4",dur:300},{note:"E4",dur:600},{note:"G4",dur:300},{note:"A4",dur:300},{note:"G4",dur:600}],fact:"A.R. Rahman used Raag Megh Malhar in Barso Re (Guru 2007) — the rain raga of India!"},
+  {id:53,title:"Vande Mataram",category:"Hindi",difficulty:1,bpm:80,notes:[{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"F4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800},{note:"G4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"F4",dur:400},{note:"E4",dur:400},{note:"D4",dur:400},{note:"C4",dur:800},{note:"C4",dur:400},{note:"E4",dur:400},{note:"F4",dur:400},{note:"G4",dur:600},{note:"F4",dur:400},{note:"E4",dur:400},{note:"C4",dur:800}],fact:"Vande Mataram by A.R. Rahman (1997) blends Carnatic classical music with modern pop!"},
+  {id:54,title:"Minecraft Theme",category:"Video Game",difficulty:2,bpm:60,notes:[{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:600},{note:"A4",dur:400},{note:"B4",dur:800},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"G4",dur:1000},{note:"A4",dur:600},{note:"B4",dur:400},{note:"C5",dur:800},{note:"B4",dur:400},{note:"A4",dur:800},{note:"G4",dur:600},{note:"A4",dur:400},{note:"B4",dur:800},{note:"C5",dur:1200}],fact:"Minimalist music — simple notes with lots of space create a dreamy feeling!"},
+  {id:55,title:"Super Mario Theme",category:"Video Game",difficulty:2,bpm:200,notes:[{note:"E5",dur:200},{note:"E5",dur:200},{note:"E5",dur:400},{note:"C5",dur:200},{note:"E5",dur:400},{note:"G5",dur:600},{note:"G4",dur:600},{note:"C5",dur:400},{note:"G4",dur:400},{note:"E4",dur:600},{note:"A4",dur:400},{note:"B4",dur:400},{note:"A#4",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"E5",dur:400},{note:"G5",dur:400},{note:"A5",dur:400},{note:"F5",dur:400},{note:"G5",dur:400},{note:"E5",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"B4",dur:600}],fact:"In C major and uses staccato notes — short, detached notes that sound bouncy!"},
+  {id:56,title:"Zelda Lullaby",category:"Video Game",difficulty:2,bpm:66,notes:[{note:"B4",dur:300},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:300},{note:"A5",dur:300},{note:"B4",dur:600},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:600},{note:"F#5",dur:800},{note:"B4",dur:300},{note:"D5",dur:300},{note:"A5",dur:600},{note:"G5",dur:600},{note:"E5",dur:800},{note:"D5",dur:300},{note:"E5",dur:300},{note:"G5",dur:600},{note:"F#5",dur:600},{note:"D5",dur:800}],fact:"In G major with a 3/4 waltz rhythm that feels magical and mysterious!"},
+  {id:57,title:"Pokemon Theme",category:"Video Game",difficulty:2,bpm:130,notes:[{note:"A4",dur:400},{note:"A4",dur:400},{note:"A4",dur:400},{note:"E4",dur:300},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"B4",dur:400},{note:"A4",dur:400},{note:"C5",dur:400},{note:"B4",dur:800},{note:"A4",dur:400},{note:"B4",dur:400},{note:"C5",dur:400},{note:"D5",dur:400},{note:"E5",dur:800},{note:"C5",dur:400},{note:"A4",dur:400},{note:"G4",dur:400},{note:"A4",dur:800}],fact:"In A major — a key popular for its bright, heroic, adventurous sound!"},
+  {id:58,title:"Tetris Theme",category:"Video Game",difficulty:2,bpm:140,notes:[{note:"E5",dur:400},{note:"B4",dur:200},{note:"C5",dur:200},{note:"D5",dur:400},{note:"C5",dur:200},{note:"B4",dur:200},{note:"A4",dur:400},{note:"A4",dur:200},{note:"C5",dur:200},{note:"E5",dur:400},{note:"D5",dur:200},{note:"C5",dur:200},{note:"B4",dur:600},{note:"C5",dur:200},{note:"D5",dur:400},{note:"E5",dur:400},{note:"C5",dur:400},{note:"A4",dur:400},{note:"A4",dur:800},{note:"D5",dur:400},{note:"F5",dur:400},{note:"A5",dur:400},{note:"G5",dur:200},{note:"F5",dur:200},{note:"E5",dur:600}],fact:"A Russian folk song called Korobeiniki — one of the most played songs in history!"},
 ];
 
 const NOTE_FREQS = {
@@ -115,36 +105,31 @@ const BADGE_DEFS = [
   {id:"listener",label:"Piano Listener",icon:"🎙",desc:"Used mic to play!"},
 ];
 
-function detectPitch(buffer, sampleRate) {
-  const SIZE = buffer.length, MAX = Math.floor(SIZE/2);
-  let rms = 0;
-  for (let i=0;i<SIZE;i++) rms+=buffer[i]*buffer[i];
-  rms = Math.sqrt(rms/SIZE);
-  if (rms<0.01) return -1;
-  let best=-1, bestCorr=0;
-  for (let offset=0;offset<MAX;offset++) {
-    let corr=0;
-    for (let i=0;i<MAX;i++) corr+=Math.abs(buffer[i]-buffer[i+offset]);
-    corr=1-corr/MAX;
-    if (corr>bestCorr){bestCorr=corr;best=offset;}
+function detectPitch(buffer,sampleRate){
+  const SIZE=buffer.length,MAX=Math.floor(SIZE/2);
+  let rms=0; for(let i=0;i<SIZE;i++) rms+=buffer[i]*buffer[i];
+  rms=Math.sqrt(rms/SIZE); if(rms<0.01)return -1;
+  let best=-1,bestCorr=0;
+  for(let offset=0;offset<MAX;offset++){
+    let corr=0; for(let i=0;i<MAX;i++) corr+=Math.abs(buffer[i]-buffer[i+offset]);
+    corr=1-corr/MAX; if(corr>bestCorr){bestCorr=corr;best=offset;}
   }
-  return bestCorr>0.9&&best>0 ? sampleRate/best : -1;
+  return bestCorr>0.9&&best>0?sampleRate/best:-1;
 }
 
-function freqToNote(freq) {
-  if (freq<=0) return null;
-  let closest=null, minDiff=Infinity;
-  for (const [note,f] of Object.entries(NOTE_FREQS)) {
-    const d=Math.abs(f-freq);
-    if (d<minDiff){minDiff=d;closest=note;}
+function freqToNote(freq){
+  if(freq<=0)return null;
+  let closest=null,minDiff=Infinity;
+  for(const [note,f] of Object.entries(NOTE_FREQS)){
+    const d=Math.abs(f-freq); if(d<minDiff){minDiff=d;closest=note;}
   }
   return minDiff<20?closest:null;
 }
 
-function playTone(note, dur, audioCtx) {
-  if (!audioCtx) return;
-  const freq=NOTE_FREQS[note]; if(!freq) return;
-  const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+function playTone(note,dur,audioCtx){
+  if(!audioCtx)return;
+  const freq=NOTE_FREQS[note]; if(!freq)return;
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
   osc.connect(gain); gain.connect(audioCtx.destination);
   osc.type="triangle"; osc.frequency.value=freq;
   gain.gain.setValueAtTime(0.4,audioCtx.currentTime);
@@ -152,14 +137,24 @@ function playTone(note, dur, audioCtx) {
   osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime+dur/1000);
 }
 
-function Stars({count}) {
+function playClick(audioCtx,accent=false){
+  if(!audioCtx)return;
+  const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.type="square"; osc.frequency.value=accent?1200:800;
+  gain.gain.setValueAtTime(accent?0.3:0.15,audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.04);
+  osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime+0.04);
+}
+
+function Stars({count}){
   return <div style={{display:"flex",gap:4}}>{[1,2,3].map(i=><span key={i} style={{fontSize:20,color:i<=count?"#f59e0b":"#d1d5db"}}>★</span>)}</div>;
 }
 
-function Confetti() {
+function Confetti(){
   const colors=["#f59e0b","#10b981","#6366f1","#ec4899","#3b82f6"];
   const pieces=Array.from({length:30},(_,i)=>({x:Math.random()*100,delay:Math.random()*0.8,color:colors[i%5],size:6+Math.random()*8}));
-  return (
+  return(
     <div style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",pointerEvents:"none",zIndex:999}}>
       {pieces.map((p,i)=><div key={i} style={{position:"absolute",left:`${p.x}%`,top:"-10px",width:p.size,height:p.size,background:p.color,borderRadius:Math.random()>0.5?"50%":"2px",animation:`fall 2s ${p.delay}s ease-in forwards`}}/>)}
       <style>{`@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}`}</style>
@@ -167,7 +162,7 @@ function Confetti() {
   );
 }
 
-export default function PianoPal() {
+export default function PianoPal(){
   const [screen,setScreen]=useState("home");
   const [selectedSong,setSelectedSong]=useState(null);
   const [gameMode,setGameMode]=useState(null);
@@ -196,9 +191,14 @@ export default function PianoPal() {
   const [micActive,setMicActive]=useState(false);
   const [micError,setMicError]=useState("");
   const [detectedNote,setDetectedNote]=useState(null);
+  const [tempoMult,setTempoMult]=useState(1.0);
+  const [countdown,setCountdown]=useState(null);
+  const [metroBeat,setMetroBeat]=useState(false);
+  const [beatNum,setBeatNum]=useState(0);
 
   const audioRef=useRef(null);
   const timeoutRef=useRef(null);
+  const metroRef=useRef(null);
   const pausedRef=useRef(false);
   const listenIndexRef=useRef(0);
   const listenSongRef=useRef(null);
@@ -212,6 +212,7 @@ export default function PianoPal() {
   const selectedSongRef=useRef(null);
   const gameModeRef=useRef(null);
   const finishedRef=useRef(false);
+  const tempoMultRef=useRef(1.0);
 
   useEffect(()=>{
     try{audioRef.current=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}
@@ -227,6 +228,7 @@ export default function PianoPal() {
   useEffect(()=>{gameModeRef.current=gameMode;},[gameMode]);
   useEffect(()=>{finishedRef.current=finished;},[finished]);
   useEffect(()=>{pausedRef.current=paused;},[paused]);
+  useEffect(()=>{tempoMultRef.current=tempoMult;},[tempoMult]);
 
   const save=(p,b,ms)=>localStorage.setItem("pianopal_v2",JSON.stringify({progress:p,badges:b,mySongs:ms}));
 
@@ -234,21 +236,42 @@ export default function PianoPal() {
     let b=[...curBadges];
     const add=id=>{if(!b.includes(id))b.push(id);};
     const completed=Object.keys(newProg).length;
-    if(completed>=1)add("first");
-    if(completed>=3)add("streak3");
-    if(completed>=10)add("streak10");
-    if(mode==="challenge")add("challenge");
-    if(usedMic)add("listener");
+    if(completed>=1)add("first"); if(completed>=3)add("streak3"); if(completed>=10)add("streak10");
+    if(mode==="challenge")add("challenge"); if(usedMic)add("listener");
     if(SONGS.filter(s=>s.category==="Disney"&&newProg[s.id]).length>=5)add("disney");
     if(SONGS.filter(s=>s.category==="Classical").every(s=>newProg[s.id]))add("classical");
     if(SONGS.filter(s=>s.category==="Hindi"&&newProg[s.id]).length>=3)add("hindi");
     return b;
   };
 
+  const stopMetronome=()=>{ clearTimeout(metroRef.current); setMetroBeat(false); setBeatNum(0); };
+
+  const startMetronome=useCallback((bpm)=>{
+    stopMetronome();
+    const interval=Math.round((60/bpm)*1000/tempoMultRef.current);
+    let beat=0;
+    const tick=()=>{
+      beat=(beat+1)%4; setBeatNum(beat); setMetroBeat(true);
+      playClick(audioRef.current,beat===0);
+      setTimeout(()=>setMetroBeat(false),80);
+      metroRef.current=setTimeout(tick,interval);
+    };
+    metroRef.current=setTimeout(tick,interval);
+  },[]);
+
+  const runCountdown=useCallback((bpm,cb)=>{
+    const interval=Math.round((60/bpm)*1000/tempoMultRef.current);
+    setCountdown(3); playClick(audioRef.current,true);
+    const t1=setTimeout(()=>{setCountdown(2);playClick(audioRef.current,true);},interval);
+    const t2=setTimeout(()=>{setCountdown(1);playClick(audioRef.current,true);},interval*2);
+    const t3=setTimeout(()=>{setCountdown(null);cb();},interval*3);
+    return ()=>{clearTimeout(t1);clearTimeout(t2);clearTimeout(t3);};
+  },[]);
+
   const playNoteUI=note=>{
     setActiveNote(note);
-    playTone(note,300,audioRef.current);
-    setTimeout(()=>setActiveNote(null),300);
+    playTone(note,Math.round(300/tempoMultRef.current),audioRef.current);
+    setTimeout(()=>setActiveNote(null),Math.round(300/tempoMultRef.current));
   };
 
   const handleCorrect=useCallback((fromMic=false)=>{
@@ -259,13 +282,13 @@ export default function PianoPal() {
     setFlashNote({note:song.notes[currentStepRef.current].note,color:"#bbf7d0"});
     setTimeout(()=>setFlashNote(null),300);
     if(next>=song.notes.length){
-      waitingRef.current=false; setWaitingForInput(false); setHighlightNote(null);
-      finishSong(newScore,mistakesRef.current,song,fromMic||micActive);
+      waitingRef.current=false; setWaitingForInput(false); setHighlightNote(null); stopMetronome();
+      finishSong(newScore,mistakesRef.current,song,fromMic);
     } else {
       currentStepRef.current=next; setCurrentStep(next);
       if(gameModeRef.current==="follow")setHighlightNote(song.notes[next].note);
     }
-  },[micActive]);
+  },[]);
 
   const handleWrong=useCallback(playedNote=>{
     const song=selectedSongRef.current; if(!song)return;
@@ -282,55 +305,41 @@ export default function PianoPal() {
     if(note===expected)handleCorrect(false); else handleWrong(note);
   };
 
-  // --- Listen playback with pause support ---
   const scheduleListen=useCallback((song,startIdx)=>{
-    if(startIdx>=song.notes.length){setPlaying(false);setHighlightNote(null);return;}
+    if(startIdx>=song.notes.length){setPlaying(false);setHighlightNote(null);stopMetronome();return;}
     listenIndexRef.current=startIdx;
     const n=song.notes[startIdx];
+    const dur=Math.round(n.dur/tempoMultRef.current);
     setHighlightNote(n.note);
-    playTone(n.note,n.dur,audioRef.current);
-    setTimeout(()=>setHighlightNote(null),n.dur-50);
-    timeoutRef.current=setTimeout(()=>{
-      if(pausedRef.current)return;
-      scheduleListen(song,startIdx+1);
-    },n.dur+100);
+    playTone(n.note,dur,audioRef.current);
+    setTimeout(()=>setHighlightNote(null),dur-50);
+    timeoutRef.current=setTimeout(()=>{ if(pausedRef.current)return; scheduleListen(song,startIdx+1); },dur+80);
   },[]);
 
   const startListen=song=>{
     listenIndexRef.current=0; listenSongRef.current=song;
-    setCurrentStep(0); setPlaying(true); setPaused(false); setFinished(false);
-    scheduleListen(song,0);
+    setCurrentStep(0); setFinished(false); setPaused(false);
+    runCountdown(song.bpm,()=>{ setPlaying(true); startMetronome(song.bpm); scheduleListen(song,0); });
   };
 
   const togglePauseListen=()=>{
-    if(!paused){
-      clearTimeout(timeoutRef.current);
-      setHighlightNote(null);
-      setPaused(true); pausedRef.current=true;
-    } else {
-      setPaused(false); pausedRef.current=false;
-      scheduleListen(listenSongRef.current,listenIndexRef.current+1);
-    }
+    if(!paused){ clearTimeout(timeoutRef.current); stopMetronome(); setHighlightNote(null); setPaused(true); pausedRef.current=true; }
+    else { setPaused(false); pausedRef.current=false; startMetronome(listenSongRef.current.bpm); scheduleListen(listenSongRef.current,listenIndexRef.current+1); }
   };
 
   const startFollow=song=>{
     currentStepRef.current=0; scoreRef.current=0; mistakesRef.current=0;
     setCurrentStep(0); setScore(0); setMistakes(0); setFinished(false);
     setPaused(false); pausedRef.current=false;
-    setWaitingForInput(true); waitingRef.current=true;
-    setHighlightNote(song.notes[0].note);
+    runCountdown(song.bpm,()=>{ setWaitingForInput(true); waitingRef.current=true; setHighlightNote(song.notes[0].note); startMetronome(song.bpm); });
   };
 
   const togglePauseFollow=()=>{
-    if(!paused){
-      setPaused(true); pausedRef.current=true;
-      setWaitingForInput(false); waitingRef.current=false;
-      setHighlightNote(null);
-    } else {
-      setPaused(false); pausedRef.current=false;
-      setWaitingForInput(true); waitingRef.current=true;
+    if(!paused){ setPaused(true); pausedRef.current=true; setWaitingForInput(false); waitingRef.current=false; setHighlightNote(null); stopMetronome(); }
+    else {
+      setPaused(false); pausedRef.current=false; setWaitingForInput(true); waitingRef.current=true;
       const song=selectedSongRef.current;
-      if(song) setHighlightNote(song.notes[currentStepRef.current].note);
+      if(song){ setHighlightNote(song.notes[currentStepRef.current].note); startMetronome(song.bpm); }
     }
   };
 
@@ -338,23 +347,20 @@ export default function PianoPal() {
     currentStepRef.current=0; scoreRef.current=0; mistakesRef.current=0;
     setCurrentStep(0); setScore(0); setMistakes(0); setFinished(false);
     setPaused(false); pausedRef.current=false;
-    setWaitingForInput(true); waitingRef.current=true;
-    setHighlightNote(null);
+    runCountdown(song.bpm,()=>{ setWaitingForInput(true); waitingRef.current=true; startMetronome(song.bpm); });
   };
 
-  // Mic
   const startMicListening=useCallback(()=>{
     if(!analyserRef.current)return;
     const analyser=analyserRef.current;
     const buffer=new Float32Array(analyser.fftSize);
-    let lastDetected=null, lastTime=0;
+    let lastDetected=null,lastTime=0;
     const loop=()=>{
       micRafRef.current=requestAnimationFrame(loop);
       if(!waitingRef.current||finishedRef.current||pausedRef.current)return;
       analyser.getFloatTimeDomainData(buffer);
       const freq=detectPitch(buffer,audioRef.current.sampleRate);
-      const note=freqToNote(freq);
-      setDetectedNote(note);
+      const note=freqToNote(freq); setDetectedNote(note);
       if(note&&note!==lastDetected&&Date.now()-lastTime>400){
         lastDetected=note; lastTime=Date.now();
         const song=selectedSongRef.current; if(!song)return;
@@ -384,21 +390,21 @@ export default function PianoPal() {
       const analyser=ctx.createAnalyser(); analyser.fftSize=2048;
       source.connect(analyser); analyserRef.current=analyser;
       setMicActive(true); startMicListening();
-    } catch(e){setMicError("Microphone access denied. Please allow mic permissions.");}
+    }catch(e){setMicError("Microphone access denied. Please allow mic permissions.");}
   };
 
   const finishSong=(sc,mis,song,usedMic=false)=>{
-    finishedRef.current=true;
-    const total=song.notes.length, pct=sc/total;
+    finishedRef.current=true; stopMetronome();
+    const pct=sc/song.notes.length;
     const s=pct>=0.95?3:pct>=0.75?2:1;
     setStars(s); setFinished(true);
     if(s>=2){setShowConfetti(true);setTimeout(()=>setShowConfetti(false),2500);}
     setShowFact(false);
     const newProg={...progress,[song.id]:Math.max(progress[song.id]||0,s)};
     setProgress(newProg);
-    let curBadges=checkBadges(newProg,badges,gameModeRef.current,usedMic);
-    if(s===3&&!badges.includes("perfect"))curBadges=[...curBadges,"perfect"];
-    setBadges(curBadges); save(newProg,curBadges,mySongs); stopMic();
+    let cb=checkBadges(newProg,badges,gameModeRef.current,usedMic||micActive);
+    if(s===3&&!badges.includes("perfect"))cb=[...cb,"perfect"];
+    setBadges(cb); save(newProg,cb,mySongs); stopMic();
   };
 
   const fetchSongFromAI=async()=>{
@@ -409,31 +415,31 @@ export default function PianoPal() {
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
           tools:[{type:"web_search_20250305",name:"web_search"}],
-          messages:[{role:"user",content:`Return ONLY valid JSON for the melody of "${searchQuery}" simplified for an 8-year-old piano beginner. No markdown. Format: {"title":"...","category":"Custom","difficulty":2,"notes":[{"note":"C4","dur":500}],"fact":"one music theory fact"} Use only: C4 D4 E4 F4 G4 A4 B4 C5 D5 E5 F5 G5 A5 B5 C#4 D#4 F#4 G#4 A#4 C#5 D#5 F#5 G#5 A#5. 12-20 notes, dur 250-1000ms.`}]})
+          messages:[{role:"user",content:`Return ONLY valid JSON for the melody of "${searchQuery}" simplified for an 8-year-old piano beginner. No markdown. Format: {"title":"...","category":"Custom","difficulty":2,"bpm":90,"notes":[{"note":"C4","dur":500}],"fact":"one music theory fact"} Use only: C4 D4 E4 F4 G4 A4 B4 C5 D5 E5 F5 G5 A5 B5 C#4 D#4 F#4 G#4 A#4 C#5 D#5 F#5 G#5 A#5. 16-24 notes, dur 200-800ms. Include a realistic bpm.`}]})
       });
       const data=await resp.json();
       setLoadingMsg("Setting up the game...");
       const textBlock=data.content?.find(b=>b.type==="text");
       if(!textBlock)throw new Error("No response");
       const parsed=JSON.parse(textBlock.text.replace(/```json|```/g,"").trim());
-      parsed.id=`custom_${Date.now()}`; parsed.category="My Songs";
+      parsed.id=`custom_${Date.now()}`; parsed.category="My Songs"; parsed.bpm=parsed.bpm||90;
       const updated=[parsed,...mySongs]; setMySongs(updated);
       let cb=[...badges]; if(!cb.includes("explorer"))cb.push("explorer");
       setBadges(cb); save(progress,cb,updated);
       setSearchQuery(""); setSelectedSong(parsed); selectedSongRef.current=parsed; setScreen("song");
-    } catch(e){setSearchError("Couldn't find that song. Try a different title!");}
+    }catch(e){setSearchError("Couldn't find that song. Try a different title!");}
     setLoadingSong(false); setLoadingMsg("");
   };
 
   const resetGame=()=>{
-    clearTimeout(timeoutRef.current); stopMic();
+    clearTimeout(timeoutRef.current); stopMic(); stopMetronome();
     setPlaying(false); setPaused(false); pausedRef.current=false;
     setWaitingForInput(false); waitingRef.current=false;
     setFinished(false); finishedRef.current=false;
     setCurrentStep(0); currentStepRef.current=0;
     setScore(0); scoreRef.current=0; setMistakes(0); mistakesRef.current=0;
     setHighlightNote(null); setShowFact(false); setGameMode(null);
-    setFlashNote(null); setDetectedNote(null);
+    setFlashNote(null); setDetectedNote(null); setCountdown(null);
     listenIndexRef.current=0;
   };
 
@@ -443,19 +449,20 @@ export default function PianoPal() {
     return catOk&&s.title.toLowerCase().includes(songSearch.toLowerCase());
   });
   const totalStars=Object.values(progress).reduce((a,b)=>a+b,0);
+  const effectiveBpm=selectedSong?Math.round(selectedSong.bpm*tempoMult):0;
 
   const KeyboardUI=({showFinger=false})=>{
     const whites=KEYS.filter(k=>k.type==="white");
     const ww=42,bw=26,kh=130,bh=82,totalW=whites.length*ww;
     const blackOffsets={"C#4":29,"D#4":71,"F#4":155,"G#4":197,"A#4":239,"C#5":323,"D#5":365,"F#5":449,"G#5":491,"A#5":533};
-    return (
+    return(
       <div style={{overflowX:"auto",overflowY:"hidden",width:"100%"}}>
         <svg width={totalW} height={kh+8} style={{display:"block",margin:"0 auto",userSelect:"none"}}>
           {whites.map((k,i)=>{
             const isActive=activeNote===k.note,isHL=highlightNote===k.note,flash=flashNote?.note===k.note;
             const finger=showFinger&&isHL?NOTE_FINGER[k.note]:null;
             const fill=flash?flashNote.color:isHL?"#fbbf24":isActive?"#bfdbfe":"white";
-            return (
+            return(
               <g key={k.note} onClick={()=>handleKeyPress(k.note)} style={{cursor:"pointer"}}>
                 <rect x={i*ww+1} y={0} width={ww-2} height={kh} rx={3} fill={fill} stroke="#9ca3af" strokeWidth={1}/>
                 <text x={i*ww+ww/2} y={kh-10} textAnchor="middle" fontSize={9} fill={isHL?"#92400e":isActive?"#1e40af":"#6b7280"} fontWeight={isHL||isActive?"600":"400"}>{k.label}</text>
@@ -468,7 +475,7 @@ export default function PianoPal() {
             const isActive=activeNote===k.note,isHL=highlightNote===k.note,flash=flashNote?.note===k.note;
             const finger=showFinger&&isHL?NOTE_FINGER[k.note]:null;
             const fill=flash?flashNote.color:isHL?"#f59e0b":isActive?"#60a5fa":"#1f2937";
-            return (
+            return(
               <g key={k.note} onClick={()=>handleKeyPress(k.note)} style={{cursor:"pointer"}}>
                 <rect x={x} y={0} width={bw} height={bh} rx={3} fill={fill}/>
                 <text x={x+bw/2} y={bh-8} textAnchor="middle" fontSize={8} fill={isHL?"#1f2937":"#e5e7eb"}>{k.label}</text>
@@ -481,8 +488,15 @@ export default function PianoPal() {
     );
   };
 
-  // HOME
-  if(screen==="home") return (
+  const BeatDots=()=>(
+    <div style={{display:"flex",gap:6,alignItems:"center",justifyContent:"center",marginBottom:8}}>
+      {[0,1,2,3].map(i=>(
+        <div key={i} style={{width:i===0?14:10,height:i===0?14:10,borderRadius:"50%",background:metroBeat&&beatNum===i?(i===0?"#ef4444":"#f59e0b"):"var(--color-border-secondary)",transition:"background 0.05s"}}/>
+      ))}
+    </div>
+  );
+
+  if(screen==="home")return(
     <div style={{maxWidth:600,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"var(--font-sans)"}}>
       <div style={{textAlign:"center",marginBottom:"1.5rem"}}>
         <div style={{fontSize:34,marginBottom:4}}>🎹</div>
@@ -516,8 +530,7 @@ export default function PianoPal() {
     </div>
   );
 
-  // SONGS
-  if(screen==="songs") return (
+  if(screen==="songs")return(
     <div style={{maxWidth:600,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"var(--font-sans)"}}>
       <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",cursor:"pointer",color:"var(--color-text-secondary)",fontSize:13,padding:0,marginBottom:"1rem"}}>← Back</button>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"0.75rem"}}>
@@ -532,21 +545,20 @@ export default function PianoPal() {
       </div>
       {filteredSongs.map(song=>(
         <div key={song.id} onClick={()=>{setSelectedSong(song);selectedSongRef.current=song;resetGame();setScreen("song");}} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"11px 14px",marginBottom:7,background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-tertiary)",borderRadius:"var(--border-radius-lg)",cursor:"pointer"}}>
-          <div><div style={{fontWeight:500,fontSize:14,color:"var(--color-text-primary)"}}>{song.title}</div><div style={{fontSize:12,color:"var(--color-text-secondary)"}}>{song.category} · {"⭐".repeat(song.difficulty)}</div></div>
+          <div><div style={{fontWeight:500,fontSize:14,color:"var(--color-text-primary)"}}>{song.title}</div><div style={{fontSize:12,color:"var(--color-text-secondary)"}}>{song.category} · {"⭐".repeat(song.difficulty)} · {song.bpm} BPM</div></div>
           <div>{progress[song.id]?<Stars count={progress[song.id]}/>:<span style={{fontSize:12,color:"var(--color-text-secondary)"}}>New</span>}</div>
         </div>
       ))}
     </div>
   );
 
-  // MY SONGS
-  if(screen==="mysongs") return (
+  if(screen==="mysongs")return(
     <div style={{maxWidth:600,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"var(--font-sans)"}}>
       <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",cursor:"pointer",color:"var(--color-text-secondary)",fontSize:13,padding:0,marginBottom:"1rem"}}>← Back</button>
       <h2 style={{fontSize:18,fontWeight:500,margin:"0 0 0.5rem",color:"var(--color-text-primary)"}}>My Songs</h2>
       <p style={{fontSize:13,color:"var(--color-text-secondary)",marginBottom:"1rem"}}>Type any song name and the AI will learn it for you!</p>
       <div style={{display:"flex",gap:8,marginBottom:"1rem"}}>
-        <input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} onKeyDown={e=>e.key==="Enter"&&fetchSongFromAI()} placeholder="e.g. Believer, Minecraft theme, Baby Shark..." style={{flex:1,padding:"9px 12px",borderRadius:"var(--border-radius-md)",border:"0.5px solid var(--color-border-secondary)",background:"var(--color-background-primary)",color:"var(--color-text-primary)",fontSize:13}}/>
+        <input value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} onKeyDown={e=>e.key==="Enter"&&fetchSongFromAI()} placeholder="e.g. Believer, Minecraft, Baby Shark..." style={{flex:1,padding:"9px 12px",borderRadius:"var(--border-radius-md)",border:"0.5px solid var(--color-border-secondary)",background:"var(--color-background-primary)",color:"var(--color-text-primary)",fontSize:13}}/>
         <button onClick={fetchSongFromAI} disabled={loadingSong||!searchQuery.trim()} style={{padding:"9px 14px",borderRadius:"var(--border-radius-md)",border:"0.5px solid var(--color-border-secondary)",background:"var(--color-background-primary)",cursor:"pointer",fontSize:13,fontWeight:500,color:"var(--color-text-primary)",opacity:loadingSong||!searchQuery.trim()?0.5:1}}>{loadingSong?"...":"Find it"}</button>
       </div>
       {loadingMsg&&<p style={{fontSize:13,color:"var(--color-text-secondary)",textAlign:"center",marginBottom:"1rem"}}>{loadingMsg}</p>}
@@ -561,15 +573,14 @@ export default function PianoPal() {
     </div>
   );
 
-  // BADGES
-  if(screen==="badges") return (
+  if(screen==="badges")return(
     <div style={{maxWidth:600,margin:"0 auto",padding:"1.5rem 1rem",fontFamily:"var(--font-sans)"}}>
       <button onClick={()=>setScreen("home")} style={{background:"none",border:"none",cursor:"pointer",color:"var(--color-text-secondary)",fontSize:13,padding:0,marginBottom:"1rem"}}>← Back</button>
       <h2 style={{fontSize:18,fontWeight:500,margin:"0 0 1rem",color:"var(--color-text-primary)"}}>Badges</h2>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
         {BADGE_DEFS.map(b=>{
           const earned=badges.includes(b.id);
-          return (
+          return(
             <div key={b.id} style={{padding:"1rem",background:"var(--color-background-primary)",border:`0.5px solid ${earned?"#f59e0b":"var(--color-border-tertiary)"}`,borderRadius:"var(--border-radius-lg)",opacity:earned?1:0.4}}>
               <div style={{fontSize:22,marginBottom:4}}>{b.icon}</div>
               <div style={{fontWeight:500,fontSize:14,color:"var(--color-text-primary)"}}>{b.label}</div>
@@ -582,19 +593,27 @@ export default function PianoPal() {
     </div>
   );
 
-  // SONG SCREEN
   if(screen==="song"&&selectedSong){
     const song=selectedSong;
     const showFinger=gameMode==="listen"||gameMode==="follow";
     const showMicBtn=(gameMode==="follow"||gameMode==="challenge")&&!finished;
     const isListenMode=gameMode==="listen";
     const isFollowMode=gameMode==="follow";
-    const canPause=(isListenMode&&playing)||(isFollowMode&&(waitingForInput||paused));
+    const canPause=(isListenMode&&(playing||paused))||(isFollowMode&&(waitingForInput||paused));
     const progress_pct=finished?100:waitingForInput?Math.round((currentStep/song.notes.length)*100):0;
 
-    return (
+    return(
       <div style={{maxWidth:640,margin:"0 auto",padding:"1rem",fontFamily:"var(--font-sans)"}}>
         {showConfetti&&<Confetti/>}
+        {countdown!==null&&(
+          <div style={{position:"fixed",top:0,left:0,width:"100%",height:"100%",background:"rgba(0,0,0,0.5)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100}}>
+            <div style={{fontSize:96,fontWeight:500,color:"white",textAlign:"center",lineHeight:1}}>
+              {countdown}
+              <div style={{fontSize:16,marginTop:8,opacity:0.8}}>get ready...</div>
+            </div>
+          </div>
+        )}
+
         <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:"1rem"}}>
           <button onClick={()=>{resetGame();setScreen("home");}} style={{background:"none",border:"none",cursor:"pointer",color:"var(--color-text-secondary)",fontSize:13,padding:0}}>← Home</button>
           <div style={{flex:1}}/>
@@ -604,14 +623,30 @@ export default function PianoPal() {
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"0.75rem"}}>
           <div>
             <h2 style={{fontSize:19,fontWeight:500,margin:0,color:"var(--color-text-primary)"}}>{song.title}</h2>
-            <div style={{fontSize:12,color:"var(--color-text-secondary)"}}>{"⭐".repeat(song.difficulty)} difficulty</div>
+            <div style={{fontSize:12,color:"var(--color-text-secondary)"}}>{"⭐".repeat(song.difficulty)} · {song.bpm} BPM</div>
           </div>
           {progress[song.id]&&<Stars count={progress[song.id]}/>}
         </div>
 
+        {/* Tempo control */}
+        <div style={{background:"var(--color-background-secondary)",borderRadius:"var(--border-radius-md)",padding:"10px 14px",marginBottom:"0.75rem"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <span style={{fontSize:12,color:"var(--color-text-secondary)",minWidth:48}}>Tempo</span>
+            <button onClick={()=>setTempoMult(m=>Math.max(0.5,parseFloat((m-0.1).toFixed(1))))} style={{width:28,height:28,borderRadius:"50%",border:"0.5px solid var(--color-border-secondary)",background:"var(--color-background-primary)",cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center",color:"var(--color-text-primary)"}}>−</button>
+            <input type="range" min={50} max={150} step={5} value={Math.round(tempoMult*100)} onChange={e=>setTempoMult(parseFloat((e.target.value/100).toFixed(2)))} style={{flex:1}}/>
+            <button onClick={()=>setTempoMult(m=>Math.min(1.5,parseFloat((m+0.1).toFixed(1))))} style={{width:28,height:28,borderRadius:"50%",border:"0.5px solid var(--color-border-secondary)",background:"var(--color-background-primary)",cursor:"pointer",fontSize:16,display:"flex",alignItems:"center",justifyContent:"center",color:"var(--color-text-primary)"}}>+</button>
+            <div style={{minWidth:60,textAlign:"right"}}>
+              <div style={{fontSize:14,fontWeight:500,color:"var(--color-text-primary)"}}>{effectiveBpm} BPM</div>
+              <div style={{fontSize:10,color:"var(--color-text-secondary)"}}>{Math.round(tempoMult*100)}%</div>
+            </div>
+          </div>
+          {tempoMult<0.8&&<div style={{fontSize:11,color:"#f59e0b",marginTop:4,textAlign:"center"}}>Slow practice mode — great for learning!</div>}
+          {tempoMult>1.2&&<div style={{fontSize:11,color:"#6366f1",marginTop:4,textAlign:"center"}}>Speed challenge!</div>}
+        </div>
+
         {!gameMode&&!finished&&(
           <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8,marginBottom:"1rem"}}>
-            {[{key:"listen",label:"Listen",desc:"Watch & hear",icon:"▶"},{key:"follow",label:"Follow",desc:"Keys light up",icon:"✦"},{key:"challenge",label:"Challenge",desc:"No hints!",icon:"⚡"}].map(m=>(
+            {[{key:"listen",label:"Listen",desc:"Watch & hear",icon:"▶"},{key:"follow",label:"Follow",desc:"Keys + beat",icon:"✦"},{key:"challenge",label:"Challenge",desc:"No hints!",icon:"⚡"}].map(m=>(
               <div key={m.key} onClick={()=>{setGameMode(m.key);gameModeRef.current=m.key;if(m.key==="listen")startListen(song);else if(m.key==="follow")startFollow(song);else startChallenge(song);}} style={{padding:"12px 8px",textAlign:"center",background:"var(--color-background-primary)",border:"0.5px solid var(--color-border-secondary)",borderRadius:"var(--border-radius-lg)",cursor:"pointer"}}>
                 <div style={{fontSize:18,marginBottom:4}}>{m.icon}</div>
                 <div style={{fontWeight:500,fontSize:13,color:"var(--color-text-primary)"}}>{m.label}</div>
@@ -624,9 +659,10 @@ export default function PianoPal() {
         {gameMode&&!finished&&(
           <div style={{marginBottom:"0.75rem"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:12,color:"var(--color-text-secondary)",marginBottom:4}}>
-              <span style={{textTransform:"capitalize"}}>{gameMode} mode {paused&&"· Paused"}</span>
+              <span style={{textTransform:"capitalize"}}>{gameMode} mode{paused?" · Paused":""}</span>
               <span>{currentStep}/{song.notes.length} notes</span>
             </div>
+            {(playing||waitingForInput)&&!paused&&<BeatDots/>}
             <div style={{height:6,background:"var(--color-background-secondary)",borderRadius:3}}>
               <div style={{height:"100%",background:paused?"#9ca3af":"#f59e0b",borderRadius:3,width:`${progress_pct}%`,transition:"width 0.2s"}}/>
             </div>
@@ -647,8 +683,7 @@ export default function PianoPal() {
             <span style={{fontSize:11,color:"var(--color-text-secondary)"}}>Fingers:</span>
             {["thumb","index","middle","ring","pinky"].map((f,i)=>(
               <span key={i} style={{fontSize:11,color:"var(--color-text-secondary)",display:"flex",alignItems:"center",gap:3}}>
-                <span style={{background:"#fef3c7",borderRadius:"50%",display:"inline-flex",width:16,height:16,alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:500,color:"#92400e"}}>{i+1}</span>
-                {f}
+                <span style={{background:"#fef3c7",borderRadius:"50%",display:"inline-flex",width:16,height:16,alignItems:"center",justifyContent:"center",fontSize:10,fontWeight:500,color:"#92400e"}}>{i+1}</span>{f}
               </span>
             ))}
           </div>
@@ -658,7 +693,7 @@ export default function PianoPal() {
           <div style={{background:"var(--color-background-secondary)",borderRadius:"var(--border-radius-lg)",padding:"1rem",marginBottom:"1rem",textAlign:"center"}}>
             <div style={{marginBottom:8}}><Stars count={stars}/></div>
             <div style={{fontWeight:500,fontSize:16,color:"var(--color-text-primary)",marginBottom:4}}>{stars===3?"Perfect! Amazing job!":stars===2?"Great playing!":"Keep practicing!"}</div>
-            <div style={{fontSize:13,color:"var(--color-text-secondary)"}}>{score} / {song.notes.length} notes correct · {mistakes} mistakes</div>
+            <div style={{fontSize:13,color:"var(--color-text-secondary)"}}>{score}/{song.notes.length} notes · {mistakes} mistakes · {effectiveBpm} BPM</div>
             <button onClick={()=>setShowFact(f=>!f)} style={{marginTop:10,padding:"6px 14px",border:"0.5px solid var(--color-border-secondary)",borderRadius:"var(--border-radius-md)",background:"transparent",cursor:"pointer",fontSize:12,color:"var(--color-text-secondary)"}}>{showFact?"Hide":"Did you know? 🎵"}</button>
             {showFact&&<div style={{marginTop:10,fontSize:13,color:"var(--color-text-primary)",background:"var(--color-background-primary)",padding:"10px 12px",borderRadius:"var(--border-radius-md)",border:"0.5px solid var(--color-border-tertiary)",textAlign:"left"}}>{song.fact}</div>}
             <div style={{display:"flex",gap:8,marginTop:12,justifyContent:"center"}}>
@@ -668,23 +703,21 @@ export default function PianoPal() {
           </div>
         )}
 
-        {gameMode==="listen"&&playing&&!paused&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>Watch the keys light up! The number shows which finger to use.</div>}
-        {gameMode==="follow"&&(waitingForInput||paused)&&!finished&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>{paused?"Paused — tap Resume to continue!":"Press the highlighted key using the numbered finger!"}</div>}
-        {gameMode==="challenge"&&waitingForInput&&!finished&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>Note {currentStep+1} of {song.notes.length} — you got this!</div>}
+        {gameMode==="listen"&&playing&&!paused&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>Watch the keys light up! Numbers show which finger to use.</div>}
+        {gameMode==="follow"&&(waitingForInput||paused)&&!finished&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>{paused?"Paused — tap Resume to continue!":"Press the highlighted key in time with the beat!"}</div>}
+        {gameMode==="challenge"&&waitingForInput&&!finished&&<div style={{textAlign:"center",marginBottom:"0.5rem",fontSize:13,color:"var(--color-text-secondary)"}}>Note {currentStep+1} of {song.notes.length} — stay with the beat!</div>}
 
         <KeyboardUI showFinger={showFinger}/>
 
         {gameMode&&!finished&&(
           <div style={{display:"flex",gap:8,justifyContent:"center",marginTop:"0.75rem",flexWrap:"wrap"}}>
             {canPause&&(
-              <button onClick={isListenMode?togglePauseListen:togglePauseFollow}
-                style={{padding:"8px 20px",borderRadius:"var(--border-radius-md)",border:`1.5px solid ${paused?"#10b981":"var(--color-border-secondary)"}`,background:paused?"#d1fae5":"var(--color-background-primary)",cursor:"pointer",fontSize:13,fontWeight:500,color:paused?"#065f46":"var(--color-text-primary)"}}>
+              <button onClick={isListenMode?togglePauseListen:togglePauseFollow} style={{padding:"8px 20px",borderRadius:"var(--border-radius-md)",border:`1.5px solid ${paused?"#10b981":"var(--color-border-secondary)"}`,background:paused?"#d1fae5":"var(--color-background-primary)",cursor:"pointer",fontSize:13,fontWeight:500,color:paused?"#065f46":"var(--color-text-primary)"}}>
                 {paused?"▶ Resume":"⏸ Pause"}
               </button>
             )}
             {showMicBtn&&(
-              <button onClick={toggleMic}
-                style={{padding:"8px 20px",borderRadius:"var(--border-radius-md)",border:`1.5px solid ${micActive?"#10b981":"var(--color-border-secondary)"}`,background:micActive?"#d1fae5":"var(--color-background-primary)",cursor:"pointer",fontSize:13,fontWeight:500,color:micActive?"#065f46":"var(--color-text-primary)"}}>
+              <button onClick={toggleMic} style={{padding:"8px 20px",borderRadius:"var(--border-radius-md)",border:`1.5px solid ${micActive?"#10b981":"var(--color-border-secondary)"}`,background:micActive?"#d1fae5":"var(--color-background-primary)",cursor:"pointer",fontSize:13,fontWeight:500,color:micActive?"#065f46":"var(--color-text-primary)"}}>
                 {micActive?"🎙 Listening...":"🎙 Use real piano"}
               </button>
             )}

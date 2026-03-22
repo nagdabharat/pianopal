@@ -5,3 +5,6 @@ export default defineConfig({
   plugins: [react()],
   base: '/pianopal/',   // must match your GitHub repo name exactly
 })
+
+
+//test
